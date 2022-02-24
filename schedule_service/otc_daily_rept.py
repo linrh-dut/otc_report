@@ -60,18 +60,20 @@ def wbill_match(date):
 
         if len(df[(df['date'] == date) & (df['type'] == 'wbill')]) == 0:
             log.info('### wbill 新增 start')
-            df.append([[date, 'wbill', trade_variety_ids, trade_variety_names, trade_num, volume, turnover]])
-            print('bcz', df.head())
+            df = df.append({
+                'date': date,
+                'type': 'wbill',
+                'variety_ids': trade_variety_ids,
+                'variety_names': trade_variety_names,
+                'trade_num': trade_num,
+                'volume': volume,
+                'turnover': turnover,
+            }, ignore_index=True)
+            df.to_csv(data_path, index=False)
             log.info('### wbill 新增 end')
         else:
             # 对比文件进行更新操作
             log.info('### wbill 更新 start')
-            df[(df['date'] == date) & (df['type'] == 'wbill')]['variety_ids'] = trade_variety_ids
-            df[(df['date'] == date) & (df['type'] == 'wbill')]['variety_names'] = trade_variety_names
-            df[(df['date'] == date) & (df['type'] == 'wbill')]['trade_num'] = trade_num
-            df[(df['date'] == date) & (df['type'] == 'wbill')]['volume'] = volume
-            df[(df['date'] == date) & (df['type'] == 'wbill')]['turnover'] = 1
-
             df = df.set_index(['date', 'type'])
             df.loc[(date, 'wbill'), 'variety_ids'] = trade_variety_ids
             df.loc[(date, 'wbill'), 'variety_names'] = trade_variety_names
@@ -79,11 +81,22 @@ def wbill_match(date):
             df.loc[(date, 'wbill'), 'volume'] = volume
             df.loc[(date, 'wbill'), 'turnover'] = turnover
             log.info('### wbill 更新 end')
-        df.to_csv(data_path)
+            df.to_csv(data_path)
 
     else:
-        df = pd.DataFrame([[date, 'wbill', trade_variety_ids, trade_variety_names, trade_num, volume, turnover]],
-                     columns=['date', 'type', 'variety_ids', 'variety_names', 'trade_num', 'volume', 'turnover'])
+        log.info('### wbill 新建 start')
+        # df = pd.DataFrame([[date, 'wbill', trade_variety_ids, trade_variety_names, trade_num, volume, turnover]],
+        #              columns=['date', 'type', 'variety_ids', 'variety_names', 'trade_num', 'volume', 'turnover'])
+        df = pd.DataFrame([{
+                'date': date,
+                'type': 'wbill',
+                'variety_ids': trade_variety_ids,
+                'variety_names': trade_variety_names,
+                'trade_num': trade_num,
+                'volume': volume,
+                'turnover': turnover,
+            }])
         df.set_index(['date', 'type'])
         df.to_csv(data_path, index=False)
+        log.info('### wbill 新建 end')
 

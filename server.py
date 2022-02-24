@@ -42,7 +42,7 @@ if __name__ == '__main__':
     log.info('######### 启动OTC日报采集自动任务 #########')
     # 自动服务时间设置 周一至周五 16点至18点 每隔10分钟
     # scheduler.add_job(job, 'cron', day_of_week='0-4', hour='16-18', minute='*/10', args=['job2'])
-    scheduler.add_job(otc_daily_rept.job, 'cron', day_of_week='0-4', hour='8-18', minute='*/1')
+    scheduler.add_job(otc_daily_rept.job, 'cron', day_of_week='0-4', hour='8-22', minute='*/1')
     scheduler.start()
     log.info('######### 启动自动任务完成 #########')
 
