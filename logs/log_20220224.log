@@ -1,0 +1,134 @@
+2022-02-24 Thursday 16:38:16  server.py : INFO  ######### 启动自动任务 #########
+2022-02-24 Thursday 16:38:16  server.py : INFO  ######### 启动OTC日报采集自动任务 #########
+2022-02-24 Thursday 16:38:16  base.py : INFO  Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2022-02-24 Thursday 16:38:16  base.py : INFO  Added job "job" to job store "default"
+2022-02-24 Thursday 16:38:16  base.py : INFO  Scheduler started
+2022-02-24 Thursday 16:38:16  server.py : INFO  ######### 启动自动任务完成 #########
+2022-02-24 Thursday 16:38:16  server.py : INFO  ######### 启动fastapi服务 #########
+2022-02-24 Thursday 16:38:16  config.py : INFO  Will watch for changes in these directories: ['/Users/linruihan/work/01.课题/OTC报表']
+2022-02-24 Thursday 16:38:16  config.py : INFO  Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2022-02-24 Thursday 16:38:16  basereload.py : INFO  Started reloader process [10261] using statreload
+2022-02-24 Thursday 16:39:00  base.py : INFO  Running job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 16:39:00 CST)" (scheduled at 2022-02-24 16:39:00+08:00)
+2022-02-24 Thursday 16:39:00  base.py : INFO  Job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 16:40:00 CST)" executed successfully
+2022-02-24 Thursday 16:39:30  basereload.py : INFO  Stopping reloader process [10261]
+2022-02-24 Thursday 16:39:30  server.py : INFO  ######### 关闭fastapi服务 #########
+2022-02-24 Thursday 16:39:46  server.py : INFO  ######### 启动自动任务 #########
+2022-02-24 Thursday 16:39:46  server.py : INFO  ######### 启动OTC日报采集自动任务 #########
+2022-02-24 Thursday 16:39:46  base.py : INFO  Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2022-02-24 Thursday 16:39:46  base.py : INFO  Added job "job" to job store "default"
+2022-02-24 Thursday 16:39:46  base.py : INFO  Scheduler started
+2022-02-24 Thursday 16:39:46  server.py : INFO  ######### 启动自动任务完成 #########
+2022-02-24 Thursday 16:39:46  server.py : INFO  ######### 启动fastapi服务 #########
+2022-02-24 Thursday 16:39:46  config.py : INFO  Will watch for changes in these directories: ['/Users/linruihan/work/01.课题/OTC报表']
+2022-02-24 Thursday 16:39:46  config.py : INFO  Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2022-02-24 Thursday 16:39:46  basereload.py : INFO  Started reloader process [10308] using statreload
+2022-02-24 Thursday 16:40:00  base.py : INFO  Running job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 16:40:00 CST)" (scheduled at 2022-02-24 16:40:00+08:00)
+2022-02-24 Thursday 16:40:00  base.py : INFO  Job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 16:41:00 CST)" executed successfully
+2022-02-24 Thursday 16:40:11  basereload.py : INFO  Stopping reloader process [10308]
+2022-02-24 Thursday 16:40:11  server.py : INFO  ######### 关闭fastapi服务 #########
+2022-02-24 Thursday 16:40:49  server.py : INFO  ######### 启动自动任务 #########
+2022-02-24 Thursday 16:40:49  server.py : INFO  ######### 启动OTC日报采集自动任务 #########
+2022-02-24 Thursday 16:40:49  base.py : INFO  Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2022-02-24 Thursday 16:40:49  base.py : INFO  Added job "job" to job store "default"
+2022-02-24 Thursday 16:40:49  base.py : INFO  Scheduler started
+2022-02-24 Thursday 16:40:49  server.py : INFO  ######### 启动自动任务完成 #########
+2022-02-24 Thursday 16:40:49  server.py : INFO  ######### 启动fastapi服务 #########
+2022-02-24 Thursday 16:40:49  config.py : INFO  Will watch for changes in these directories: ['/Users/linruihan/work/01.课题/OTC报表']
+2022-02-24 Thursday 16:40:49  config.py : INFO  Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2022-02-24 Thursday 16:40:49  basereload.py : INFO  Started reloader process [10335] using statreload
+2022-02-24 Thursday 16:41:00  base.py : INFO  Running job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 16:41:00 CST)" (scheduled at 2022-02-24 16:41:00+08:00)
+2022-02-24 Thursday 16:41:00  base.py : INFO  Job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 16:42:00 CST)" executed successfully
+2022-02-24 Thursday 16:41:10  basereload.py : INFO  Stopping reloader process [10335]
+2022-02-24 Thursday 16:41:10  server.py : INFO  ######### 关闭fastapi服务 #########
+2022-02-24 Thursday 16:48:13  server.py : INFO  ######### 启动自动任务 #########
+2022-02-24 Thursday 16:48:13  server.py : INFO  ######### 启动OTC日报采集自动任务 #########
+2022-02-24 Thursday 16:48:13  base.py : INFO  Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2022-02-24 Thursday 16:48:13  base.py : INFO  Added job "job" to job store "default"
+2022-02-24 Thursday 16:48:13  base.py : INFO  Scheduler started
+2022-02-24 Thursday 16:48:13  server.py : INFO  ######### 启动自动任务完成 #########
+2022-02-24 Thursday 16:48:13  server.py : INFO  ######### 启动fastapi服务 #########
+2022-02-24 Thursday 16:48:13  config.py : INFO  Will watch for changes in these directories: ['/Users/linruihan/work/01.课题/OTC报表']
+2022-02-24 Thursday 16:48:13  config.py : INFO  Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2022-02-24 Thursday 16:48:13  basereload.py : INFO  Started reloader process [10541] using statreload
+2022-02-24 Thursday 16:49:00  base.py : INFO  Running job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 16:49:00 CST)" (scheduled at 2022-02-24 16:49:00+08:00)
+2022-02-24 Thursday 16:49:00  base.py : INFO  Job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 16:50:00 CST)" executed successfully
+2022-02-24 Thursday 16:49:17  basereload.py : INFO  Stopping reloader process [10541]
+2022-02-24 Thursday 16:49:17  server.py : INFO  ######### 关闭fastapi服务 #########
+2022-02-24 Thursday 16:51:29  server.py : INFO  ######### 启动自动任务 #########
+2022-02-24 Thursday 16:51:29  server.py : INFO  ######### 启动OTC日报采集自动任务 #########
+2022-02-24 Thursday 16:51:29  base.py : INFO  Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2022-02-24 Thursday 16:51:29  base.py : INFO  Added job "job" to job store "default"
+2022-02-24 Thursday 16:51:29  base.py : INFO  Scheduler started
+2022-02-24 Thursday 16:51:29  server.py : INFO  ######### 启动自动任务完成 #########
+2022-02-24 Thursday 16:51:29  server.py : INFO  ######### 启动fastapi服务 #########
+2022-02-24 Thursday 16:51:29  config.py : INFO  Will watch for changes in these directories: ['/Users/linruihan/work/01.课题/OTC报表']
+2022-02-24 Thursday 16:51:29  config.py : INFO  Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2022-02-24 Thursday 16:51:29  basereload.py : INFO  Started reloader process [10677] using statreload
+2022-02-24 Thursday 16:52:00  base.py : INFO  Running job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 16:52:00 CST)" (scheduled at 2022-02-24 16:52:00+08:00)
+2022-02-24 Thursday 16:52:00  base.py : INFO  Job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 16:53:00 CST)" executed successfully
+2022-02-24 Thursday 16:52:49  statreload.py : WARNING  StatReload detected file change in 'schedule_service/otc_daily_rept.py'. Reloading...
+2022-02-24 Thursday 16:53:00  base.py : INFO  Running job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 16:54:00 CST)" (scheduled at 2022-02-24 16:53:00+08:00)
+2022-02-24 Thursday 16:53:00  base.py : INFO  Job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 16:54:00 CST)" executed successfully
+2022-02-24 Thursday 16:54:00  base.py : INFO  Running job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 16:55:00 CST)" (scheduled at 2022-02-24 16:54:00+08:00)
+2022-02-24 Thursday 16:54:00  base.py : INFO  Job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 16:55:00 CST)" executed successfully
+2022-02-24 Thursday 16:54:02  basereload.py : INFO  Stopping reloader process [10677]
+2022-02-24 Thursday 16:54:02  server.py : INFO  ######### 关闭fastapi服务 #########
+2022-02-24 Thursday 16:56:27  server.py : INFO  ######### 启动自动任务 #########
+2022-02-24 Thursday 16:56:27  server.py : INFO  ######### 启动OTC日报采集自动任务 #########
+2022-02-24 Thursday 16:56:27  base.py : INFO  Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2022-02-24 Thursday 16:56:27  base.py : INFO  Added job "job" to job store "default"
+2022-02-24 Thursday 16:56:27  base.py : INFO  Scheduler started
+2022-02-24 Thursday 16:56:27  server.py : INFO  ######### 启动自动任务完成 #########
+2022-02-24 Thursday 16:56:27  server.py : INFO  ######### 启动fastapi服务 #########
+2022-02-24 Thursday 16:56:27  config.py : INFO  Will watch for changes in these directories: ['/Users/linruihan/work/01.课题/OTC报表']
+2022-02-24 Thursday 16:56:27  config.py : INFO  Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2022-02-24 Thursday 16:56:27  basereload.py : INFO  Started reloader process [10764] using statreload
+2022-02-24 Thursday 16:57:00  base.py : INFO  Running job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 16:57:00 CST)" (scheduled at 2022-02-24 16:57:00+08:00)
+2022-02-24 Thursday 16:57:00  base.py : INFO  Job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 16:58:00 CST)" executed successfully
+2022-02-24 Thursday 16:58:00  base.py : INFO  Running job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 16:59:00 CST)" (scheduled at 2022-02-24 16:58:00+08:00)
+2022-02-24 Thursday 16:58:00  base.py : INFO  Job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 16:59:00 CST)" executed successfully
+2022-02-24 Thursday 16:58:30  basereload.py : INFO  Stopping reloader process [10764]
+2022-02-24 Thursday 16:58:30  server.py : INFO  ######### 关闭fastapi服务 #########
+2022-02-24 Thursday 17:10:17  server.py : INFO  ######### 启动自动任务 #########
+2022-02-24 Thursday 17:10:17  server.py : INFO  ######### 启动OTC日报采集自动任务 #########
+2022-02-24 Thursday 17:10:17  base.py : INFO  Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2022-02-24 Thursday 17:10:17  base.py : INFO  Added job "job" to job store "default"
+2022-02-24 Thursday 17:10:17  base.py : INFO  Scheduler started
+2022-02-24 Thursday 17:10:17  server.py : INFO  ######### 启动自动任务完成 #########
+2022-02-24 Thursday 17:10:17  server.py : INFO  ######### 启动fastapi服务 #########
+2022-02-24 Thursday 17:10:17  config.py : INFO  Will watch for changes in these directories: ['/Users/linruihan/work/01.课题/OTC报表']
+2022-02-24 Thursday 17:10:17  config.py : INFO  Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2022-02-24 Thursday 17:10:17  basereload.py : INFO  Started reloader process [11184] using statreload
+2022-02-24 Thursday 17:11:00  base.py : INFO  Running job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 17:11:00 CST)" (scheduled at 2022-02-24 17:11:00+08:00)
+2022-02-24 Thursday 17:11:00  base.py : INFO  Job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 17:12:00 CST)" executed successfully
+2022-02-24 Thursday 17:11:11  basereload.py : INFO  Stopping reloader process [11184]
+2022-02-24 Thursday 17:11:11  server.py : INFO  ######### 关闭fastapi服务 #########
+2022-02-24 Thursday 17:14:18  server.py : INFO  ######### 启动自动任务 #########
+2022-02-24 Thursday 17:14:19  server.py : INFO  ######### 启动OTC日报采集自动任务 #########
+2022-02-24 Thursday 17:14:19  base.py : INFO  Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2022-02-24 Thursday 17:14:19  base.py : INFO  Added job "job" to job store "default"
+2022-02-24 Thursday 17:14:19  base.py : INFO  Scheduler started
+2022-02-24 Thursday 17:14:19  server.py : INFO  ######### 启动自动任务完成 #########
+2022-02-24 Thursday 17:14:19  server.py : INFO  ######### 启动fastapi服务 #########
+2022-02-24 Thursday 17:14:19  config.py : INFO  Will watch for changes in these directories: ['/Users/linruihan/work/01.课题/OTC报表']
+2022-02-24 Thursday 17:14:19  config.py : INFO  Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2022-02-24 Thursday 17:14:19  basereload.py : INFO  Started reloader process [11327] using statreload
+2022-02-24 Thursday 17:14:19  server.py : INFO  Started server process [11329]
+2022-02-24 Thursday 17:14:19  on.py : INFO  Waiting for application startup.
+2022-02-24 Thursday 17:14:19  on.py : INFO  Application startup complete.
+2022-02-24 Thursday 17:15:00  base.py : INFO  Running job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 17:15:00 CST)" (scheduled at 2022-02-24 17:15:00+08:00)
+2022-02-24 Thursday 17:15:00  base.py : INFO  Job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 17:16:00 CST)" executed successfully
+2022-02-24 Thursday 17:16:00  base.py : INFO  Running job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 17:17:00 CST)" (scheduled at 2022-02-24 17:16:00+08:00)
+2022-02-24 Thursday 17:16:00  otc_daily_rept.py : INFO  ### wbill 更新 start
+2022-02-24 Thursday 17:16:00  otc_daily_rept.py : INFO  ### wbill 更新 end
+2022-02-24 Thursday 17:16:00  base.py : INFO  Job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 17:17:00 CST)" executed successfully
+2022-02-24 Thursday 17:17:00  base.py : INFO  Running job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 17:18:00 CST)" (scheduled at 2022-02-24 17:17:00+08:00)
+2022-02-24 Thursday 17:17:00  otc_daily_rept.py : INFO  ### wbill 新增 start
+2022-02-24 Thursday 17:17:00  otc_daily_rept.py : INFO  ### wbill 新增 end
+2022-02-24 Thursday 17:17:00  base.py : INFO  Job "job (trigger: cron[day_of_week='0-4', hour='8-18', minute='*/1'], next run at: 2022-02-24 17:18:00 CST)" executed successfully
+2022-02-24 Thursday 17:17:11  server.py : INFO  Shutting down
+2022-02-24 Thursday 17:17:11  on.py : INFO  Waiting for application shutdown.
+2022-02-24 Thursday 17:17:11  on.py : INFO  Application shutdown complete.
+2022-02-24 Thursday 17:17:11  server.py : INFO  Finished server process [11329]
+2022-02-24 Thursday 17:17:11  basereload.py : INFO  Stopping reloader process [11327]
+2022-02-24 Thursday 17:17:11  server.py : INFO  ######### 关闭fastapi服务 #########
