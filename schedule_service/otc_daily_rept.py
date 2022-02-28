@@ -308,7 +308,8 @@ def save_data(date, ctype, variety_ids, variety_names, trade_num, volume, turnov
             df.loc[(date, ctype), 'variety_names'] = variety_names
             df.loc[(date, ctype), 'trade_num'] = trade_num
             df.loc[(date, ctype), 'volume'] = volume
-            df.loc[(date, ctype), 'turnover'] = turnover
+            if ctype is not 'swap':
+                df.loc[(date, ctype), 'turnover'] = turnover
             log.info('### 更新 end')
             df.to_csv(data_path)
 
