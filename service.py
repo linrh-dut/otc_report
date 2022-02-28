@@ -38,9 +38,30 @@ def update_swap_turnover(date, turnover):
 
 
 def query_daily_rept(date):
-    pass
+    """
+    获得当日整体查询数据
+    :param date:
+    :return:
+    """
+    data_path = 'data/{year}.csv'.format(year=date[:4])
+    df = pd.read_csv(data_path)
+    # 获得当日数据
+    df['date'] = df['date'].astype('str')
+    daily_data = df[(df['date'] == date)]
+    # 获得前5日数据
+    last5_date = df[df['date'] <= date]['date'].drop_duplicates().sort_values(ascending=False).head(5).values
+    last5_data = df[df['date'].isin(last5_date)].groupby(['date', 'type']).sum()['turnover'].sort_index(ascending=False)
+    # 获得全年汇总数据
+    year_data = df[df['date'] <= date].groupby('type').sum()
+
+    return {
+        'daily_data': daily_data,
+        'last5_data': last5_data,
+        'year_data': year_data
+    }
 
 
 if __name__ == '__main__':
     # print(query_swap_turnover('20220223'))
-    print(update_swap_turnover('20220223', 201))
+    # print(update_swap_turnover('20220223', 201))
+    print(query_daily_rept('20220225'))
