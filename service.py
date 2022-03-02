@@ -1,20 +1,20 @@
 import pandas as pd
 
 
-def query_swap_turnover(date):
+def query_swap_info(date):
     """
-    查询交换业务当日turnover数据
+    查询交换业务当日swap数据
     :param date: 当日日期
-    :return: float turnover数据，若没有设置，则返回None
+    :return: float swap数据，若没有设置，则返回None
     """
     data_path = 'data/{year}.csv'.format(year=date[:4])
     df = pd.read_csv(data_path)
     df['date'] = df['date'].astype('str')
-    turnover = df[(df['date'] == date) & (df['type'] == 'swap')]['turnover']
-    if len(turnover.isnull().values) > 0 and not turnover.isnull().values[0]:
-        return float(turnover.values[0])
+    swap_info = df[(df['date'] == date) & (df['type'] == 'swap')][['trade_num', 'turnover']].fillna(0)
+    if len(swap_info.values) == 0:
+        return [0, 0]
     else:
-        return None
+        return swap_info.values[0]
 
 
 def update_swap_turnover(date, turnover):
@@ -62,6 +62,6 @@ def query_daily_rept(date):
 
 
 if __name__ == '__main__':
-    # print(query_swap_turnover('20220223'))
+    print(query_swap_info('20220223')[0])
     # print(update_swap_turnover('20220223', 201))
-    print(query_daily_rept('20220225'))
+    # print(query_daily_rept('20220225'))
