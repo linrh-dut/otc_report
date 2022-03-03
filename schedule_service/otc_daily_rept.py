@@ -13,17 +13,17 @@ HEADERS = {
 }
 
 
-def job():
+def job(date=datetime.datetime.now().strftime('%Y%m%d')):
     """
     采集当日期权各报表基础数据（标准仓单 非标仓单 基差交易 商品互换 场外期权）
     :return: flag：True 成功，False 失败
     """
-    date = datetime.datetime.now().strftime('%Y%m%d')
     # date = '20220225'
     wbill_match(date)
     non_wbill_match(date)
     index_basis(date)
     swap_match(date)
+    opt_match(date)
 
 
 def wbill_match(date):
@@ -73,11 +73,13 @@ def wbill_match(date):
         trade_num = len([row for row in rows2 if row['opDate'] == date])
         # 成交量 单位：吨
         volume = sum([row['matchTotWeight'] for row in rows])
-        # 成交额 单位：万元
+        # 成交额 单位：元
         turnover = sum([row['turnover'] for row in rows])
 
         save_data(date, 'wbill', variety_ids, variety_names, trade_num, volume, turnover)
         log.info('### 标准仓单信息采集服务 处理流程 end')
+    else:
+        save_data(date, 'wbill', '', '', 0, 0, 0)
 
 
 def non_wbill_match(date):
@@ -116,11 +118,13 @@ def non_wbill_match(date):
         trade_num = len(rows)
         # 成交量 单位：吨
         volume = sum([int(row['applyWeight']) for row in rows])
-        # 成交额 单位：万元
-        turnover = sum([int(row['applyWeight']) * int(row['price']) for row in rows]) / 10000
+        # 成交额 单位：元
+        turnover = sum([int(row['applyWeight']) * int(row['price']) for row in rows])
 
         save_data(date, 'nonwbill', variety_ids, variety_names, trade_num, volume, turnover)
         log.info('### 非标准仓单信息采集服务 处理流程 end')
+    else:
+        save_data(date, 'nonwbill', '', '', 0, 0, 0)
 
 
 def index_basis(date):
@@ -161,11 +165,13 @@ def index_basis(date):
         trade_num = len(rows)
         # 成交量 单位：吨
         volume = sum([int(row['qty']) for row in rows])
-        # 成交额 单位：万元
-        turnover = sum([int(row['nominalMatchAmt']) for row in rows])
+        # 成交额 单位：元
+        turnover = sum([int(row['nominalMatchAmt']) for row in rows]) * 10000
 
         save_data(date, 'basis', variety_ids, variety_names, trade_num, volume, turnover)
         log.info('### 基差交易信息采集服务 处理流程 end')
+    else:
+        save_data(date, 'basis', '', '', 0, 0, 0)
 
 
 def swap_match(date):
@@ -205,11 +211,11 @@ def swap_match(date):
         for row in rows:
             # 1 单商品互换 2 指数交换 3 价差互换
             contract_type = row['contractType']
-            if contract_type == 1:
+            if contract_type == '1':
                 variety_name_set.add(row['subjectContractId'][0:-4])
-            elif contract_type == 2:
+            elif contract_type == '2':
                 variety_name_set.add(row['subjectContractId'][7:].split('期货')[0])
-            elif contract_type == 3:
+            elif contract_type == '3':
                 variety_name_set.add(row['subjectContractId'].split('-')[0][2:-4])
 
         variety_names = '、'.join(variety_name_set)
@@ -222,7 +228,8 @@ def swap_match(date):
 
         save_data(date, 'swap', variety_ids, variety_names, trade_num, volume, turnover)
         log.info('### 商品互换信息采集服务 处理流程 end')
-
+    else:
+        save_data(date, 'swap', '', '', 0, 0, 0)
 
 def opt_match(date):
     """
@@ -264,8 +271,10 @@ def opt_match(date):
         # 成交额 单位：万元
         turnover = sum([int(row['nominalMatchAmt']) for row in rows])
 
-        save_data(date, 'basis', variety_ids, variety_names, trade_num, volume, turnover)
+        save_data(date, 'opt', variety_ids, variety_names, trade_num, volume, turnover)
         log.info('### 场外期权信息采集服务 处理流程 end')
+    else:
+        save_data(date, 'opt', '', '', 0, 0, 0)
 
 
 def save_data(date, ctype, variety_ids, variety_names, trade_num, volume, turnover):

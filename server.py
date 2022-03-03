@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.openapi.docs import get_swagger_ui_html
 
 from apscheduler.schedulers.background import BackgroundScheduler
-import time
+import json
 import datetime
 import uvicorn
 import utils
@@ -48,85 +48,102 @@ async def get_swap_trade_info():
 @app.get("/getOptReport")
 async def get_opt_report(swap_turnover=None):
     date = datetime.datetime.now().strftime('%Y%m%d')
+    # 更新交换业务名义本金
     if swap_turnover is not None:
         sv.update_swap_turnover(date, swap_turnover)
-    print(swap_turnover)
-    # swap_info = sv.query_swap_info(date)
-    return {
-        "Status": 200,
-        "daily": {
-            "daily_sum": 2.35,
-            "month_sum": 21.27,
-            "year_sum": 38.76,
-            "wbill": {
-                "num": 34,
-                "varietys": "玉米、豆油、豆粕、聚丙烯、聚氯乙烯",
-                "volume": 1.32,
-                "turnover": 0.85
-            },
-            "non_wbill": {
-                "num": 34,
-                "varietys": "玉米、豆油、豆粕、聚丙烯、聚氯乙烯",
-                "volume": 1.32,
-                "turnover": 0.85
-            },
-            "index_basis": {
-                "num": 34,
-                "varietys": "玉米、豆油、豆粕、聚丙烯、聚氯乙烯",
-                "volume": 1.32,
-                "turnover": 0.85
-            },
-            "swap": {
-                "num": 34,
-                "varietys": "玉米、豆油、豆粕、聚丙烯、聚氯乙烯",
-                "turnover": 0.85
-            },
-            "opt": {
-                "num": 34,
-                "varietys": "玉米、豆油、豆粕、聚丙烯、聚氯乙烯",
-                "turnover": 0.85
-            }
+
+    volume_unit = 10000
+    turnover_unit = 100000000
+    data = sv.query_daily_rept(date)
+    data['daily_data']['date'] = data['daily_data']['date'].astype('str')
+    daily_data = data['daily_data'].set_index(['date', 'type'])
+    last5_data_type = data['last5_data'].reset_index().set_index('type')
+    last5_data = data['last5_data'].reset_index()
+    month_data = data['month_data']
+    year_data = data['year_data']
+
+    daily = {
+        "daily_sum": round(daily_data['turnover'].sum() / turnover_unit, 2),
+        "month_sum": round(month_data['turnover'].sum() / turnover_unit, 2),
+        "year_sum": round(year_data['turnover'].sum() / turnover_unit, 2),
+        "wbill": {
+            "num": int(daily_data['trade_num'][(date, 'wbill')]),
+            "varietys": str(daily_data['variety_names'][(date, 'wbill')]),
+            "volume": round(daily_data['volume'][(date, 'wbill')] / volume_unit, 2),
+            "turnover": round(daily_data['turnover'][(date, 'wbill')] / turnover_unit, 2)
         },
-        "weekly": {
-            "dates": ["2月25日", "2月24日", "2月23日", "2月22日", "2月21日"],
-            "wbill": [16, 34, 50, 10, 20],
-            "non_wbill": [46, 24, 38, 30, 40],
-            "index_basis": [26, 24, 18, 50, 50],
-            "swap": [26, 24, 18, 50, 50],
-            "opt": [26, 24, 18, 50, 50],
-            "sum": [140, 130, 142, 190, 210]
+        "non_wbill": {
+            "num": int(daily_data['trade_num'][(date, 'nonwbill')]),
+            "varietys": daily_data['variety_names'].fillna('')[(date, 'nonwbill')],
+            "volume": round(daily_data['volume'][(date, 'nonwbill')] / volume_unit, 2),
+            "turnover": round(daily_data['turnover'][(date, 'nonwbill')] / turnover_unit, 2)
         },
-        "yearly": {
-            "wbill": {
-                "num": 222,
-                "volume": 6.81,
-                "turnover": 5.14
-            },
-            "non_wbill": {
-                "num": 6,
-                "volume": 7.5,
-                "turnover": 0.65
-            },
-            "index_basis": {
-                "num": 225,
-                "volume": 56.52,
-                "turnover": 23.33
-            },
-            "swap": {
-                "num": 88,
-                "turnover": 9.63
-            },
-            "opt": {
-                "num": "-",
-                "turnover": "-"
-            },
-            "sum": {
-                "num": 541,
-                "volume": 70.83,
-                "turnover": 38.57
-            }
+        "index_basis": {
+            "num": int(daily_data['trade_num'][(date, 'basis')]),
+            "varietys": daily_data['variety_names'].fillna('')[(date, 'basis')],
+            "volume": round(daily_data['volume'][(date, 'basis')] / volume_unit, 2),
+            "turnover": round(daily_data['turnover'][(date, 'basis')] / turnover_unit, 2)
+        },
+        "swap": {
+            "num": int(daily_data['trade_num'][(date, 'swap')]),
+            "varietys": daily_data['variety_names'].fillna('')[(date, 'swap')],
+            "turnover": round(daily_data['turnover'][(date, 'swap')] / turnover_unit, 2)
+        },
+        "opt": {
+            "num": int(daily_data['trade_num'][(date, 'opt')]),
+            "varietys": daily_data['variety_names'].fillna('')[(date, 'opt')],
+            "turnover": round(daily_data['turnover'][(date, 'opt')] / turnover_unit, 2)
         }
     }
+
+    weekly = {
+        "dates": [str(int(date[4:6])) + '月' + str(int(date[6:8])) + '日' for date in
+                  last5_data['date'].drop_duplicates().values.tolist()],
+        "wbill": (last5_data_type['turnover']['wbill'] / turnover_unit).round(2).values.tolist(),
+        "non_wbill": (last5_data_type['turnover']['nonwbill'] / turnover_unit).round(2).values.tolist(),
+        "index_basis": (last5_data_type['turnover']['basis'] / turnover_unit).round(2).values.tolist(),
+        "swap": (last5_data_type['turnover']['swap'] / turnover_unit).round(2).values.tolist(),
+        "opt": (last5_data_type['turnover']['opt'] / turnover_unit).round(2).values.tolist(),
+        "sum": (last5_data.groupby('date').sum()['turnover'] / turnover_unit).sort_index(ascending=False).round(2).values.tolist()
+    }
+
+    yearly = {
+        "wbill": {
+            "num": int(year_data['trade_num']['wbill']),
+            "volume": (year_data['volume']['wbill'] / volume_unit).round(2),
+            "turnover": (year_data['turnover']['wbill'] / turnover_unit).round(2)
+        },
+        "non_wbill": {
+            "num": int(year_data['trade_num']['nonwbill']),
+            "volume": (year_data['volume']['nonwbill'] / volume_unit).round(2),
+            "turnover": (year_data['turnover']['nonwbill'] / turnover_unit).round(2)
+        },
+        "index_basis": {
+            "num": int(year_data['trade_num']['basis']),
+            "volume": (year_data['volume']['basis'] / volume_unit).round(2),
+            "turnover": (year_data['turnover']['basis'] / turnover_unit).round(2)
+        },
+        "swap": {
+            "num": int(year_data['trade_num']['swap']),
+            "turnover": (year_data['turnover']['swap'] / turnover_unit).round(2)
+        },
+        "opt": {
+            "num": int(year_data['trade_num']['opt']),
+            "turnover": (year_data['turnover']['opt'] / turnover_unit).round(2)
+        },
+        "sum": {
+            "num": int(year_data['trade_num'].sum()),
+            "volume": (year_data['volume'].sum() / volume_unit).round(2),
+            "turnover": (year_data['turnover'].sum() / turnover_unit).round(2)
+        }
+    }
+
+    return json.loads(json.dumps({
+        "Status": 200,
+        "daily": daily,
+        "weekly": weekly,
+        "yearly": yearly,
+    }))
 
 
 if __name__ == '__main__':
