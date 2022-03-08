@@ -1,5 +1,7 @@
 import pandas as pd
 
+turnover_unit = 10000
+
 
 def query_swap_info(date):
     """
@@ -11,7 +13,7 @@ def query_swap_info(date):
     df = pd.read_csv(data_path)
     df['date'] = df['date'].astype('str')
     swap_info = df[(df['date'] == date) & (df['type'] == 'swap')][['trade_num', 'turnover']].fillna(0)
-    swap_info['turnover'] = swap_info['turnover'] / 100000000
+    swap_info['turnover'] = swap_info['turnover'] / turnover_unit
     if len(swap_info.values) == 0:
         return [0, 0]
     else:
@@ -31,7 +33,44 @@ def update_swap_turnover(date, turnover):
     if not df[(df['date'] == date) & (df['type'] == 'swap')].empty:
         # 判断该条记录是否存在
         df = df.set_index(['date', 'type'])
-        df.loc[(date, 'swap'), 'turnover'] = float(turnover) * 100000000
+        df.loc[(date, 'swap'), 'turnover'] = float(turnover) * turnover_unit
+        df.to_csv(data_path)
+        return True
+    else:
+        return False
+
+
+def query_opt_info(date):
+    """
+    查询交换业务当日opt数据
+    :param date: 当日日期
+    :return: float opt数据[交易笔数, 名义本金]，若没有记录，则返回[0, 0]
+    """
+    data_path = 'data/{year}.csv'.format(year=date[:4])
+    df = pd.read_csv(data_path)
+    df['date'] = df['date'].astype('str')
+    opt_info = df[(df['date'] == date) & (df['type'] == 'opt')][['trade_num', 'turnover']].fillna(0)
+    opt_info['turnover'] = opt_info['turnover'] / turnover_unit
+    if len(opt_info.values) == 0:
+        return [0, 0]
+    else:
+        return opt_info.values[0]
+
+
+def update_opt_turnover(date, turnover):
+    """
+    更新交换业务当日turnover数据
+    :param date: 当日日期
+    :param turnover: turnover数据
+    :return: 更新标志 True：更新成功，False：更新失败
+    """
+    data_path = 'data/{year}.csv'.format(year=date[:4])
+    df = pd.read_csv(data_path)
+    df['date'] = df['date'].astype('str')
+    if not df[(df['date'] == date) & (df['type'] == 'opt')].empty:
+        # 判断该条记录是否存在
+        df = df.set_index(['date', 'type'])
+        df.loc[(date, 'opt'), 'turnover'] = float(turnover) * turnover_unit
         df.to_csv(data_path)
         return True
     else:
