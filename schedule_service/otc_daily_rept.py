@@ -72,9 +72,9 @@ def wbill_match(date):
         # 交易笔数
         trade_num = len([row for row in rows2 if row['opDate'] == date])
         # 成交量 单位：吨
-        volume = sum([row['matchTotWeight'] for row in rows])
+        volume = sum([float(row['matchTotWeight']) for row in rows])
         # 成交额 单位：元
-        turnover = sum([row['turnover'] for row in rows])
+        turnover = sum([float(row['turnover']) for row in rows])
 
         save_data(date, 'wbill', variety_ids, variety_names, trade_num, volume, turnover)
         log.info('### 标准仓单信息采集服务 处理流程 end')
@@ -117,9 +117,9 @@ def non_wbill_match(date):
         # 交易笔数
         trade_num = len(rows)
         # 成交量 单位：吨
-        volume = sum([int(row['applyWeight']) for row in rows])
+        volume = sum([float(row['applyWeight']) for row in rows])
         # 成交额 单位：元
-        turnover = sum([int(row['applyWeight']) * int(row['price']) for row in rows])
+        turnover = sum([float(row['applyWeight']) * float(row['price']) for row in rows])
 
         save_data(date, 'nonwbill', variety_ids, variety_names, trade_num, volume, turnover)
         log.info('### 非标准仓单信息采集服务 处理流程 end')
@@ -164,9 +164,9 @@ def index_basis(date):
         # 交易笔数
         trade_num = len(rows)
         # 成交量 单位：吨
-        volume = sum([int(row['qty']) for row in rows])
+        volume = sum([float(row['qty']) for row in rows])
         # 成交额 单位：元
-        turnover = sum([int(row['nominalMatchAmt']) for row in rows]) * 10000
+        turnover = round(sum([float(row['nominalMatchAmt']) for row in rows]) * 10000, 0)
 
         save_data(date, 'basis', variety_ids, variety_names, trade_num, volume, turnover)
         log.info('### 基差交易信息采集服务 处理流程 end')
@@ -231,6 +231,7 @@ def swap_match(date):
     else:
         save_data(date, 'swap', '', '', 0, 0, 0)
 
+
 def opt_match(date):
     """
             场外期权信息采集服务
@@ -267,9 +268,9 @@ def opt_match(date):
         # 交易笔数
         trade_num = len(rows)
         # 成交量 单位：吨
-        volume = sum([int(row['qty']) for row in rows])
+        volume = None
         # 成交额 单位：万元
-        turnover = sum([int(row['nominalMatchAmt']) for row in rows])
+        turnover = None
 
         save_data(date, 'opt', variety_ids, variety_names, trade_num, volume, turnover)
         log.info('### 场外期权信息采集服务 处理流程 end')
