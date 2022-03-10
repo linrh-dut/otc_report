@@ -15,7 +15,7 @@ def query_swap_info(date):
     swap_info = df[(df['date'] == date) & (df['type'] == 'swap')][['trade_num', 'turnover']].fillna(0)
     swap_info['turnover'] = swap_info['turnover'] / turnover_unit
     if len(swap_info.values) == 0:
-        return [0, 0]
+        raise Exception('no data')
     else:
         return swap_info.values[0]
 
@@ -52,7 +52,7 @@ def query_opt_info(date):
     opt_info = df[(df['date'] == date) & (df['type'] == 'opt')][['trade_num', 'turnover']].fillna(0)
     opt_info['turnover'] = opt_info['turnover'] / turnover_unit
     if len(opt_info.values) == 0:
-        return [0, 0]
+        raise Exception('no data')
     else:
         return opt_info.values[0]
 
