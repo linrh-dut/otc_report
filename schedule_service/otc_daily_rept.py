@@ -272,7 +272,9 @@ def opt_match(date):
         # 成交额 单位：万元
         turnover = None
 
-        save_data(date, 'opt', variety_ids, variety_names, trade_num, volume, turnover)
+        # save_data(date, 'opt', variety_ids, variety_names, trade_num, volume, turnover)
+        # 根据业务部门要求，暂时不记录场外期权数据
+        save_data(date, 'opt', '', '', 0, 0, 0)
         log.info('### 场外期权信息采集服务 处理流程 end')
     else:
         save_data(date, 'opt', '', '', 0, 0, 0)
