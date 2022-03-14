@@ -13,12 +13,14 @@ HEADERS = {
 }
 
 
-def job(date=datetime.datetime.now().strftime('%Y%m%d')):
+def job(date=None):
     """
     采集当日期权各报表基础数据（标准仓单 非标仓单 基差交易 商品互换 场外期权）
     :return: flag：True 成功，False 失败
     """
     # date = '20220225'
+    if date is None:
+        date = datetime.datetime.now().strftime('%Y%m%d')
     wbill_match(date)
     non_wbill_match(date)
     index_basis(date)
