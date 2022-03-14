@@ -69,8 +69,8 @@ def wbill_match(date):
     if len(rows) > 0:
         log.info('### 标准仓单信息采集服务 处理流程 start')
         # 交易品种
-        variety_ids = ','.join([row['varietyId'] for row in rows])
-        variety_names = '、'.join([row['varietyName'] for row in rows])
+        variety_ids = ','.join(set([row['varietyId'] for row in rows]))
+        variety_names = '、'.join(set([row['varietyName'] for row in rows]))
         # 交易笔数
         trade_num = len([row for row in rows2 if row['opDate'] == date])
         # 成交量 单位：吨
@@ -114,8 +114,8 @@ def non_wbill_match(date):
     if len(rows) > 0:
         log.info('### 非标准仓单信息采集服务 处理流程 start')
         # 交易品种
-        variety_ids = ','.join([row['varietyId'] for row in rows])
-        variety_names = '、'.join([row['varietyName'] for row in rows])
+        variety_ids = ','.join(set([row['varietyId'] for row in rows]))
+        variety_names = '、'.join(set([row['varietyName'] for row in rows]))
         # 交易笔数
         trade_num = len(rows)
         # 成交量 单位：吨
