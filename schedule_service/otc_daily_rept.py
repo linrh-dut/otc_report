@@ -12,6 +12,34 @@ HEADERS = {
     'Content-Type': 'application/json;charset=UTF-8'
 }
 
+# 品种排序
+variety_order = {
+    '豆一': 1,
+    '豆粕': 2,
+    '豆油': 3,
+    '棕榈油': 4,
+    '玉米': 5,
+    '玉米淀粉': 6,
+    '淀粉': 7,
+    '大连商品交易所猪饲料': 8,
+    '鸡蛋': 9,
+    '乙二醇': 10,
+    '苯乙烯': 11,
+    '聚乙烯': 12,
+    '聚丙烯': 13,
+    '聚氯乙烯': 14,
+    '铁矿石': 15
+}
+
+
+def sorted_variety(l):
+    """
+    品种排序方法
+    :param l: 排序列表
+    :return:
+    """
+    return sorted(l, key=lambda x: variety_order[x] if x in variety_order else 999)
+
 
 def job(date=None):
     """
@@ -70,7 +98,7 @@ def wbill_match(date):
         log.info('### 标准仓单信息采集服务 处理流程 start')
         # 交易品种
         variety_ids = ','.join(set([row['varietyId'] for row in rows]))
-        variety_names = '、'.join(set([row['varietyName'] for row in rows]))
+        variety_names = '、'.join(sorted_variety(set([row['varietyName'] for row in rows])))
         # 交易笔数
         trade_num = len([row for row in rows2 if row['opDate'] == date])
         # 成交量 单位：吨
@@ -115,7 +143,7 @@ def non_wbill_match(date):
         log.info('### 非标准仓单信息采集服务 处理流程 start')
         # 交易品种
         variety_ids = ','.join(set([row['varietyId'] for row in rows]))
-        variety_names = '、'.join(set([row['varietyName'] for row in rows]))
+        variety_names = '、'.join(sorted_variety(set([row['varietyName'] for row in rows])))
         # 交易笔数
         trade_num = len(rows)
         # 成交量 单位：吨
@@ -162,7 +190,7 @@ def index_basis(date):
         log.info('### 基差交易信息采集服务 处理流程 start')
         # 交易品种
         variety_ids = ','.join(set([row['varietyId'] for row in rows]))
-        variety_names = '、'.join(set([row['varietyName'] for row in rows]))
+        variety_names = '、'.join(sorted_variety(set([row['varietyName'] for row in rows])))
         # 交易笔数
         trade_num = len(rows)
         # 成交量 单位：吨
@@ -220,7 +248,7 @@ def swap_match(date):
             elif contract_type == '3':
                 variety_name_set.add(row['subjectContractId'].split('-')[0][2:-4])
 
-        variety_names = '、'.join(variety_name_set)
+        variety_names = '、'.join(sorted_variety(variety_name_set))
         # 交易笔数
         trade_num = len(rows)
         # 成交量 单位：吨
@@ -266,7 +294,7 @@ def opt_match(date):
         log.info('### 场外期权信息采集服务 处理流程 start')
         # 交易品种
         variety_ids = None
-        variety_names = '、'.join(set([row['subjectContractId'][0:-4] for row in rows]))
+        variety_names = '、'.join(sorted_variety(set([row['subjectContractId'][0:-4] for row in rows])))
         # 交易笔数
         trade_num = len(rows)
         # 成交量 单位：吨

@@ -90,7 +90,7 @@ def query_daily_rept(date):
     daily_data = df[(df['date'] == date)]
     # 获得前5日数据
     last5_date = df[(df['date'] <= date) & (df['trade_num'] > 0)]['date'].drop_duplicates().sort_values(ascending=False).head(5).values
-    last5_data = df[df['date'].isin(last5_date)].groupby(['date', 'type']).sum()['turnover'].sort_index(ascending=False)
+    last5_data = df[df['date'].isin(last5_date)].groupby(['date', 'type']).sum()['turnover'].sort_index(ascending=True)
     # 获得当月数据
     month_data = df[(df['date'] <= date) & (df['date'] >= (date[:6]+'01'))].groupby('type').sum()
     # 获得全年汇总数据
