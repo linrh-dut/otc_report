@@ -117,7 +117,7 @@ async def get_opt_report(swap_turnover=None, opt_turnover=None):
         last5_basis = (last5_data_type['turnover']['basis'] / turnover_unit).round(2).values.tolist()
         last5_swap = (last5_data_type['turnover']['swap'] / turnover_unit).round(2).values.tolist()
         last5_opt = (last5_data_type['turnover']['opt'] / turnover_unit).round(2).values.tolist()
-        last5_sum = (last5_data.groupby('date').sum()['turnover'] / turnover_unit).sort_index(ascending=False).round(
+        last5_sum = (last5_data.groupby('date').sum()['turnover'] / turnover_unit).sort_index(ascending=True).round(
             2).values.tolist()
         # sum数据一致性
         last5_sum[-1] = daily_sum_turnover
