@@ -112,15 +112,12 @@ async def get_opt_report(swap_turnover=None, opt_turnover=None):
         month_sum_turnover = round(month_data['turnover'].sum() / turnover_unit, 2)
 
         # last5数据计算
-        last5_wbill = (last5_data_type['turnover']['wbill'] / turnover_unit).round(2).values.tolist()
-        last5_nonwbill = (last5_data_type['turnover']['nonwbill'] / turnover_unit).round(2).values.tolist()
-        last5_basis = (last5_data_type['turnover']['basis'] / turnover_unit).round(2).values.tolist()
-        last5_swap = (last5_data_type['turnover']['swap'] / turnover_unit).round(2).values.tolist()
-        last5_opt = (last5_data_type['turnover']['opt'] / turnover_unit).round(2).values.tolist()
-        last5_sum = (last5_data.groupby('date').sum()['turnover'] / turnover_unit).sort_index(ascending=True).round(
-            2).values.tolist()
-        # sum数据一致性
-        last5_sum[-1] = daily_sum_turnover
+        last5_wbill = (last5_data_type['turnover']['wbill'] / turnover_unit).round(2).values
+        last5_nonwbill = (last5_data_type['turnover']['nonwbill'] / turnover_unit).round(2).values
+        last5_basis = (last5_data_type['turnover']['basis'] / turnover_unit).round(2).values
+        last5_swap = (last5_data_type['turnover']['swap'] / turnover_unit).round(2).values
+        last5_opt = (last5_data_type['turnover']['opt'] / turnover_unit).round(2).values
+        last5_sum = (last5_wbill + last5_nonwbill + last5_basis + last5_swap + last5_opt).round(2)
 
         # 年数据计算
         year_wbill_num = int(year_data['trade_num']['wbill'])
@@ -183,12 +180,12 @@ async def get_opt_report(swap_turnover=None, opt_turnover=None):
         weekly = {
             "dates": [str(int(date[4:6])) + '月' + str(int(date[6:8])) + '日' for date in
                       last5_data['date'].drop_duplicates().values.tolist()],
-            "wbill": last5_wbill,
-            "non_wbill": last5_nonwbill,
-            "index_basis": last5_basis,
-            "swap": last5_swap,
-            "opt": last5_opt,
-            "sum": last5_sum
+            "wbill": last5_wbill.tolist(),
+            "non_wbill": last5_nonwbill.tolist(),
+            "index_basis": last5_basis.tolist(),
+            "swap": last5_swap.tolist(),
+            "opt": last5_opt.tolist(),
+            "sum": last5_sum.tolist()
         }
 
         yearly = {
