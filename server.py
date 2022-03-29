@@ -144,36 +144,36 @@ async def get_opt_report(swap_turnover=None, opt_turnover=None):
             2)
 
         daily = {
-            "daily_sum": daily_sum_turnover,
-            "month_sum": month_sum_turnover,
-            "year_sum": year_sum_turnover,
+            "daily_sum": '%.2f' % daily_sum_turnover,
+            "month_sum": '%.2f' % month_sum_turnover,
+            "year_sum": '%.2f' % year_sum_turnover,
             "wbill": {
                 "num": day_wbill_num,
                 "varietys": day_wbill_varietys,
-                "volume": day_wbill_volume,
-                "turnover": day_wbill_turnover
+                "volume": '%.2f' % day_wbill_volume,
+                "turnover": '%.2f' % day_wbill_turnover
             },
             "non_wbill": {
                 "num": day_nonwbill_num,
                 "varietys": day_nonwbill_varietys,
-                "volume": day_nonwbill_volume,
-                "turnover": day_nonwbill_turnover
+                "volume": '%.2f' % day_nonwbill_volume,
+                "turnover": '%.2f' % day_nonwbill_turnover
             },
             "index_basis": {
                 "num": day_basis_num,
                 "varietys": day_basis_varietys,
-                "volume": day_basis_volume,
-                "turnover": day_basis_turnover
+                "volume": '%.2f' % day_basis_volume,
+                "turnover": '%.2f' % day_basis_turnover
             },
             "swap": {
                 "num": day_swap_num,
                 "varietys": day_swap_varietys,
-                "turnover": day_swap_turnover
+                "turnover": '%.2f' % day_swap_turnover
             },
             "opt": {
                 "num": day_opt_num,
                 "varietys": day_opt_varietys,
-                "turnover": day_opt_turnover
+                "turnover": '%.2f' % day_opt_turnover
             }
         }
 
@@ -185,37 +185,37 @@ async def get_opt_report(swap_turnover=None, opt_turnover=None):
             "index_basis": last5_basis.tolist(),
             "swap": last5_swap.tolist(),
             "opt": last5_opt.tolist(),
-            "sum": last5_sum.tolist()
+            "sum": ['%.2f' % s for s in last5_sum.tolist()]
         }
 
         yearly = {
             "wbill": {
                 "num": year_wbill_num,
-                "volume": year_wbill_volume,
-                "turnover": year_wbill_turnover
+                "volume": '%.2f' % year_wbill_volume,
+                "turnover": '%.2f' % year_wbill_turnover
             },
             "non_wbill": {
                 "num": year_nonwbill_num,
-                "volume": year_nonwbill_volume,
-                "turnover": year_nonwbill_turnover
+                "volume": '%.2f' % year_nonwbill_volume,
+                "turnover": '%.2f' % year_nonwbill_turnover
             },
             "index_basis": {
                 "num": year_basis_num,
-                "volume": year_basis_volume,
-                "turnover": year_basis_turnover
+                "volume": '%.2f' % year_basis_volume,
+                "turnover": '%.2f' % year_basis_turnover
             },
             "swap": {
                 "num": year_swap_num,
-                "turnover": year_swap_turnover
+                "turnover": '%.2f' % year_swap_turnover
             },
             "opt": {
                 "num": year_opt_num,
-                "turnover": year_opt_turnover
+                "turnover": '%.2f' % year_opt_turnover
             },
             "sum": {
                 "num": int(year_data['trade_num'].sum()),
-                "volume": year_sum_volume,
-                "turnover": year_sum_turnover
+                "volume": '%.2f' % year_sum_volume,
+                "turnover": '%.2f' % year_sum_turnover
             }
         }
 
@@ -226,6 +226,7 @@ async def get_opt_report(swap_turnover=None, opt_turnover=None):
             "yearly": yearly,
         }))
     except Exception as e:
+        print(e.with_traceback())
         return json.loads(json.dumps({
             "Status": 100
         }))
