@@ -48,12 +48,18 @@ async def get_trade_info():
         date = datetime.datetime.now().strftime('%Y%m%d')
         swap_info = sv.query_swap_info(date)
         opt_info = sv.query_opt_info(date)
+        if opt_info[2] == 0:
+            # 判断场外期权品种是否为空
+            opt_varieties = ''
+        else:
+            opt_varieties = opt_info[2]
         return {
             "Status": 200,
             "swap_num": swap_info[0],
             "swap_turnover": swap_info[1],
             "opt_num": opt_info[0],
             "opt_turnover": opt_info[1],
+            "opt_varieties": opt_varieties,
         }
     except Exception as e:
         return json.loads(json.dumps({
@@ -62,16 +68,16 @@ async def get_trade_info():
 
 
 @app.get("/getOptReport")
-async def get_opt_report(swap_turnover=None, opt_turnover=None):
+async def get_opt_report(swap_turnover=None, opt_turnover=None, opt_num=None, opt_varieties=None):
     try:
         date = datetime.datetime.now().strftime('%Y%m%d')
         # 更新交换业务名义本金
-        if swap_turnover is not None:
+        if swap_turnover is not None and len(swap_turnover) > 0:
             sv.update_swap_turnover(date, swap_turnover)
 
         # 更新期权业务名义本金
         if opt_turnover is not None:
-            sv.update_opt_turnover(date, opt_turnover)
+            sv.update_opt_turnover(date, opt_turnover, opt_num, opt_varieties)
 
         volume_unit = 10000
         turnover_unit = 100000000
