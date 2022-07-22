@@ -4,6 +4,7 @@ import requests
 import datetime
 import json
 import pandas as pd
+import csv
 import os
 import utils
 
@@ -49,11 +50,17 @@ def job(date=None):
     # date = '20220225'
     if date is None:
         date = datetime.datetime.now().strftime('%Y%m%d')
-    wbill_match(date)
-    non_wbill_match(date)
-    index_basis(date)
-    swap_match(date)
-    opt_match(date)
+    trade_dates = []
+    with open('data/trade_date.csv', 'r') as f:
+        reader = csv.reader(f)
+        for line in reader:
+            trade_dates.append(line[0])
+    if date in trade_dates:
+        wbill_match(date)
+        non_wbill_match(date)
+        index_basis(date)
+        swap_match(date)
+        opt_match(date)
 
 
 def wbill_match(date):

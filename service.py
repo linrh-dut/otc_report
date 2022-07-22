@@ -49,7 +49,7 @@ def query_opt_info(date):
     data_path = 'data/{year}.csv'.format(year=date[:4])
     df = pd.read_csv(data_path)
     df['date'] = df['date'].astype('str')
-    opt_info = df[(df['date'] == date) & (df['type'] == 'opt')][['trade_num', 'turnover']].fillna(0)
+    opt_info = df[(df['date'] == date) & (df['type'] == 'opt')][['trade_num', 'turnover', 'variety_names']].fillna(0)
     opt_info['turnover'] = opt_info['turnover'] / turnover_unit
     if len(opt_info.values) == 0:
         raise Exception('no data')
@@ -57,7 +57,7 @@ def query_opt_info(date):
         return opt_info.values[0]
 
 
-def update_opt_turnover(date, turnover):
+def update_opt_turnover(date, turnover, opt_num, opt_varieties):
     """
     更新交换业务当日turnover数据
     :param date: 当日日期
@@ -70,7 +70,12 @@ def update_opt_turnover(date, turnover):
     if not df[(df['date'] == date) & (df['type'] == 'opt')].empty:
         # 判断该条记录是否存在
         df = df.set_index(['date', 'type'])
+        if opt_num == '' or opt_num == '0':
+            turnover = 0
+            opt_num = 0
         df.loc[(date, 'opt'), 'turnover'] = float(turnover) * turnover_unit
+        df.loc[(date, 'opt'), 'trade_num'] = int(opt_num)
+        df.loc[(date, 'opt'), 'variety_names'] = opt_varieties.strip()
         df.to_csv(data_path)
         return True
     else:

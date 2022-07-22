@@ -43,17 +43,22 @@ def get_documentation():
 
 
 @app.get("/tradeInfo")
-async def get_trade_info():
+async def get_trade_info(date=datetime.datetime.now().strftime('%Y%m%d')):
     try:
-        date = datetime.datetime.now().strftime('%Y%m%d')
         swap_info = sv.query_swap_info(date)
         opt_info = sv.query_opt_info(date)
+        if opt_info[2] == 0:
+            # 判断场外期权品种是否为空
+            opt_varieties = ''
+        else:
+            opt_varieties = opt_info[2]
         return {
             "Status": 200,
             "swap_num": swap_info[0],
             "swap_turnover": swap_info[1],
             "opt_num": opt_info[0],
             "opt_turnover": opt_info[1],
+            "opt_varieties": opt_varieties,
         }
     except Exception as e:
         return json.loads(json.dumps({
@@ -62,16 +67,15 @@ async def get_trade_info():
 
 
 @app.get("/getOptReport")
-async def get_opt_report(swap_turnover=None, opt_turnover=None):
+async def get_opt_report(date=datetime.datetime.now().strftime('%Y%m%d'), swap_turnover=None, opt_turnover=None, opt_num=None, opt_varieties=None):
     try:
-        date = datetime.datetime.now().strftime('%Y%m%d')
         # 更新交换业务名义本金
-        if swap_turnover is not None:
+        if swap_turnover is not None and len(swap_turnover) > 0:
             sv.update_swap_turnover(date, swap_turnover)
 
         # 更新期权业务名义本金
         if opt_turnover is not None:
-            sv.update_opt_turnover(date, opt_turnover)
+            sv.update_opt_turnover(date, opt_turnover, opt_num, opt_varieties)
 
         volume_unit = 10000
         turnover_unit = 100000000
@@ -139,9 +143,7 @@ async def get_opt_report(swap_turnover=None, opt_turnover=None):
         year_opt_turnover = (year_data['turnover']['opt'] / turnover_unit).round(2)
 
         year_sum_volume = (year_wbill_volume + year_nonwbill_volume + year_basis_volume).round(2)
-        year_sum_turnover = (
-                    year_wbill_turnover + year_nonwbill_turnover + year_basis_turnover + year_swap_turnover + year_opt_turnover).round(
-            2)
+        year_sum_turnover = (year_wbill_turnover + year_nonwbill_turnover + year_basis_turnover + year_swap_turnover + year_opt_turnover).round(2)
 
         daily = {
             "daily_sum": '%.2f' % daily_sum_turnover,
@@ -239,7 +241,7 @@ if __name__ == '__main__':
     scheduler = BackgroundScheduler(timezone='Asia/Shanghai')
     log.info('######### 启动OTC日报采集自动任务 #########')
     # 自动服务时间设置 周一至周五 16点至18点 每隔10分钟
-    scheduler.add_job(otc_daily_rept.job, 'cron', day_of_week='0-4', hour='15-18', minute='*/10')
+    scheduler.add_job(otc_daily_rept.job, 'cron', day_of_week='0-4', hour='18-20', minute='*/10')
     # scheduler.add_job(otc_daily_rept.job, 'cron', day_of_week='0-4', hour='8-22', minute='*/1')
     scheduler.start()
     log.info('######### 启动自动任务完成 #########')
