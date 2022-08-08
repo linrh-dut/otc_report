@@ -67,19 +67,15 @@ async def get_trade_info(date=datetime.datetime.now().strftime('%Y%m%d')):
 
 
 @app.get("/getOptReport")
-async def get_opt_report(date=datetime.datetime.now().strftime('%Y%m%d'), swap_turnover=None, opt_turnover=None, opt_num=None, opt_varieties=None):
+async def get_opt_report(date=datetime.datetime.now().strftime('%Y%m%d')):
     try:
-        # 更新交换业务名义本金
-        if swap_turnover is not None and len(swap_turnover) > 0:
-            sv.update_swap_turnover(date, swap_turnover)
-
-        # 更新期权业务名义本金
-        if opt_turnover is not None:
-            sv.update_opt_turnover(date, opt_turnover, opt_num, opt_varieties)
-
         volume_unit = 10000
         turnover_unit = 100000000
         data = sv.query_daily_rept(date)
+        if data['daily_data'].shape[0] == 0:
+            return json.loads(json.dumps({
+            "Status": 100
+        }))
         data['daily_data']['date'] = data['daily_data']['date'].astype('str')
         daily_data = data['daily_data'].set_index(['date', 'type'])
         last5_data_type = data['last5_data'].reset_index().set_index('type')
@@ -103,25 +99,27 @@ async def get_opt_report(date=datetime.datetime.now().strftime('%Y%m%d'), swap_t
         day_basis_volume = round(daily_data['volume'][(date, 'basis')] / volume_unit, 2)
         day_basis_turnover = round(daily_data['turnover'][(date, 'basis')] / turnover_unit, 2)
 
-        day_swap_num = int(daily_data['trade_num'][(date, 'swap')])
-        day_swap_varietys = daily_data['variety_names'].fillna('')[(date, 'swap')]
-        day_swap_turnover = round(daily_data['turnover'][(date, 'swap')] / turnover_unit, 2)
-
-        day_opt_num = int(daily_data['trade_num'][(date, 'opt')])
-        day_opt_varietys = daily_data['variety_names'].fillna('')[(date, 'opt')]
-        day_opt_turnover = round(daily_data['turnover'][(date, 'opt')] / turnover_unit, 2)
+        # day_swap_num = int(daily_data['trade_num'][(date, 'swap')])
+        # day_swap_varietys = daily_data['variety_names'].fillna('')[(date, 'swap')]
+        # day_swap_turnover = round(daily_data['turnover'][(date, 'swap')] / turnover_unit, 2)
+        #
+        # day_opt_num = int(daily_data['trade_num'][(date, 'opt')])
+        # day_opt_varietys = daily_data['variety_names'].fillna('')[(date, 'opt')]
+        # day_opt_turnover = round(daily_data['turnover'][(date, 'opt')] / turnover_unit, 2)
 
         daily_sum_turnover = round(
-            day_wbill_turnover + day_nonwbill_turnover + day_basis_turnover + day_swap_turnover + day_opt_turnover, 2)
+            day_wbill_turnover + day_nonwbill_turnover + day_basis_turnover, 2)
+        daily_sum_volume = round(
+            day_wbill_volume + day_nonwbill_volume + day_basis_volume, 2)
         month_sum_turnover = round(month_data['turnover'].sum() / turnover_unit, 2)
 
         # last5数据计算
         last5_wbill = (last5_data_type['turnover']['wbill'] / turnover_unit).round(2).values
         last5_nonwbill = (last5_data_type['turnover']['nonwbill'] / turnover_unit).round(2).values
         last5_basis = (last5_data_type['turnover']['basis'] / turnover_unit).round(2).values
-        last5_swap = (last5_data_type['turnover']['swap'] / turnover_unit).round(2).values
-        last5_opt = (last5_data_type['turnover']['opt'] / turnover_unit).round(2).values
-        last5_sum = (last5_wbill + last5_nonwbill + last5_basis + last5_swap + last5_opt).round(2)
+        # last5_swap = (last5_data_type['turnover']['swap'] / turnover_unit).round(2).values
+        # last5_opt = (last5_data_type['turnover']['opt'] / turnover_unit).round(2).values
+        last5_sum = (last5_wbill + last5_nonwbill + last5_basis).round(2)
 
         # 年数据计算
         year_wbill_num = int(year_data['trade_num']['wbill'])
@@ -147,6 +145,7 @@ async def get_opt_report(date=datetime.datetime.now().strftime('%Y%m%d'), swap_t
 
         daily = {
             "daily_sum": '%.2f' % daily_sum_turnover,
+            "daily_volume_sum": '%.2f' % daily_sum_volume,
             "month_sum": '%.2f' % month_sum_turnover,
             "year_sum": '%.2f' % year_sum_turnover,
             "wbill": {
@@ -167,16 +166,16 @@ async def get_opt_report(date=datetime.datetime.now().strftime('%Y%m%d'), swap_t
                 "volume": '%.2f' % day_basis_volume,
                 "turnover": '%.2f' % day_basis_turnover
             },
-            "swap": {
-                "num": day_swap_num,
-                "varietys": day_swap_varietys,
-                "turnover": '%.2f' % day_swap_turnover
-            },
-            "opt": {
-                "num": day_opt_num,
-                "varietys": day_opt_varietys,
-                "turnover": '%.2f' % day_opt_turnover
-            }
+            # "swap": {
+            #     "num": day_swap_num,
+            #     "varietys": day_swap_varietys,
+            #     "turnover": '%.2f' % day_swap_turnover
+            # },
+            # "opt": {
+            #     "num": day_opt_num,
+            #     "varietys": day_opt_varietys,
+            #     "turnover": '%.2f' % day_opt_turnover
+            # }
         }
 
         weekly = {
@@ -185,8 +184,9 @@ async def get_opt_report(date=datetime.datetime.now().strftime('%Y%m%d'), swap_t
             "wbill": last5_wbill.tolist(),
             "non_wbill": last5_nonwbill.tolist(),
             "index_basis": last5_basis.tolist(),
-            "swap": last5_swap.tolist(),
-            "opt": last5_opt.tolist(),
+            # "swap": last5_swap.tolist(),
+            # "opt": last5_opt.tolist(),
+            # "sum": ['%.2f' % s for s in last5_sum.tolist()]
             "sum": ['%.2f' % s for s in last5_sum.tolist()]
         }
 
