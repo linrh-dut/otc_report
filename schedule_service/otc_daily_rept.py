@@ -10,7 +10,8 @@ import utils
 
 log = utils.get_log()
 HEADERS = {
-    'Content-Type': 'application/json;charset=UTF-8'
+    'Content-Type': 'application/json;charset=UTF-8',
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36DCE@jcb202207otc",
 }
 
 # 品种排序
@@ -91,8 +92,8 @@ def wbill_match(date):
         api_url = 'http://otc.dce.com.cn/portal/data/app/wbillMatchList'
         log.info('### 标准仓单信息采集服务 API:' + api_url)
         api2_url = 'http://otc.dce.com.cn/portal/data/app/wbillApplyList'
-        resp = requests.post(api_url, data=json.dumps(data), headers=HEADERS)
-        resp2 = requests.post(api2_url, data=json.dumps(data2), headers=HEADERS)
+        resp = requests.post(api_url, data=json.dumps(data), headers=HEADERS, timeout=5)
+        resp2 = requests.post(api2_url, data=json.dumps(data2), headers=HEADERS, timeout=5)
         result = json.loads(resp.text)
         result2 = json.loads(resp2.text)
     except Exception as e:
@@ -139,7 +140,7 @@ def non_wbill_match(date):
     try:
         api_url = 'http://otc.dce.com.cn/portal/data/app/nonWbillMatchList'
         log.info('### 非标准仓单信息采集服务 API:' + api_url)
-        resp = requests.post(api_url, data=json.dumps(data), headers=HEADERS)
+        resp = requests.post(api_url, data=json.dumps(data), headers=HEADERS, timeout=5)
         result = json.loads(resp.text)
     except Exception as e:
         log.error('### 非标准仓单信息采集服务 API:' + api_url + ' 接口异常：' + e)
@@ -186,7 +187,7 @@ def index_basis(date):
     try:
         api_url = 'http://otc.dce.com.cn/portal/data/app/indexBasis'
         log.info('### 基差交易信息采集服务 API:' + api_url)
-        resp = requests.post(api_url, data=json.dumps(data), headers=HEADERS)
+        resp = requests.post(api_url, data=json.dumps(data), headers=HEADERS, timeout=5)
         result = json.loads(resp.text)
     except Exception as e:
         log.error('### 基差交易信息采集服务 API:' + api_url + ' 接口异常：' + e)
@@ -233,7 +234,7 @@ def swap_match(date):
     try:
         api_url = 'http://otc.dce.com.cn/portal/data/app/swapMatch'
         log.info('### 商品互换信息采集服务 API:' + api_url)
-        resp = requests.post(api_url, data=json.dumps(data), headers=HEADERS)
+        resp = requests.post(api_url, data=json.dumps(data), headers=HEADERS, timeout=5)
         result = json.loads(resp.text)
     except Exception as e:
         log.error('### 商品互换信息采集服务 API:' + api_url + ' 接口异常：' + e)
@@ -290,7 +291,7 @@ def opt_match(date):
     try:
         api_url = 'http://otc.dce.com.cn/portal/data/app/optMatch'
         log.info('### 场外期权信息采集服务 API:' + api_url)
-        resp = requests.post(api_url, data=json.dumps(data), headers=HEADERS)
+        resp = requests.post(api_url, data=json.dumps(data), headers=HEADERS, timeout=5)
         result = json.loads(resp.text)
     except Exception as e:
         log.error('### 场外期权信息采集服务 API:' + api_url + ' 接口异常：' + e)
