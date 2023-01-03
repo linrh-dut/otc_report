@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 turnover_unit = 10000
 
@@ -95,7 +96,22 @@ def query_daily_rept(date):
     daily_data = df[(df['date'] == date)]
     # 获得前5日数据
     last5_date = df[(df['date'] <= date) & (df['trade_num'] > 0)]['date'].drop_duplicates().sort_values(ascending=False).head(5).values
-    last5_data = df[df['date'].isin(last5_date)].groupby(['date', 'type']).sum()['turnover'].sort_index(ascending=True)
+    if len(last5_date) < 5:
+        last_year = int(date[:4]) - 1
+        last_data_path = 'data/{last_year}.csv'.format(last_year=last_year)
+        if os.path.exists(last_data_path):
+            last_top = 5 - len(last5_date)
+            last_df = pd.read_csv(last_data_path)
+            last_df['date'] = last_df['date'].astype('str')
+            last_year_date = last_df[last_df['trade_num'] > 0]['date'].drop_duplicates().sort_values(ascending=False).head(last_top).values
+            last_year_data = last_df[last_df['date'].isin(last_year_date)].groupby(['date', 'type']).sum()['turnover'].sort_index(ascending=True)
+            
+            year_data = df[df['date'].isin(last5_date)].groupby(['date', 'type']).sum()['turnover'].sort_index(ascending=True)
+            last5_data = pd.concat([last_year_data, year_data], axis=0 )
+        else:
+            last5_data = df[df['date'].isin(last5_date)].groupby(['date', 'type']).sum()['turnover'].sort_index(ascending=True)
+    else:
+        last5_data = df[df['date'].isin(last5_date)].groupby(['date', 'type']).sum()['turnover'].sort_index(ascending=True)
     # 获得当月数据
     month_data = df[(df['date'] <= date) & (df['date'] >= (date[:6]+'01'))].groupby('type').sum()
     # 获得全年汇总数据
